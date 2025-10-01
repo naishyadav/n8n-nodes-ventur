@@ -28,7 +28,7 @@ export class Ventur implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'Endpoint',
+				displayName: 'Venture Intelligence Endpoint',
 				name: 'endpoint',
 				type: 'options',
 				options: [
@@ -88,33 +88,108 @@ export class Ventur implements INodeType {
 				description: 'Select the Ventur API endpoint to use',
 			},
 			{
-				displayName: 'Simplify Response',
-				name: 'simplify',
-				type: 'boolean',
-				default: false,
-				description: 'Whether to return a simplified version of the response instead of the raw data',
-			},
-			{
-				displayName: 'Query',
-				name: 'query',
+				displayName: 'Company Name',
+				name: 'companySnapshotName',
 				type: 'string',
 				default: '',
 				required: true,
 				displayOptions: {
 					show: {
-						endpoint: [
-							'companySnapshot',
-							'peopleSnapshot',
-							'webSearch',
-							'demoResearch',
-							'customerFeedback',
-							'recruitmentData',
-							'technologyLookup',
-							'officialRecords',
-						],
+						endpoint: ['companySnapshot'],
 					},
 				},
-				description: 'The search query or company/person name',
+				description: 'Please enter a company name, e.g., Monzo Bank',
+			},
+			{
+				displayName: 'Person Name',
+				name: 'personName',
+				type: 'string',
+				default: '',
+				required: true,
+				displayOptions: {
+					show: {
+						endpoint: ['peopleSnapshot'],
+					},
+				},
+				description: 'Please enter a person\'s name, e.g., John Doe',
+			},
+			{
+				displayName: 'Search Query',
+				name: 'webSearchQuery',
+				type: 'string',
+				default: '',
+				required: true,
+				displayOptions: {
+					show: {
+						endpoint: ['webSearch'],
+					},
+				},
+				description: 'Enter a search query',
+			},
+			{
+				displayName: 'Research Query',
+				name: 'researchQuery',
+				type: 'string',
+				default: '',
+				required: true,
+				displayOptions: {
+					show: {
+						endpoint: ['demoResearch'],
+					},
+				},
+				description: 'Enter a research query for demo preparation',
+			},
+			{
+				displayName: 'Company Name',
+				name: 'customerFeedbackCompanyName',
+				type: 'string',
+				default: '',
+				required: true,
+				displayOptions: {
+					show: {
+						endpoint: ['customerFeedback'],
+					},
+				},
+				description: 'Please enter a company name, e.g., Monzo Bank',
+			},
+			{
+				displayName: 'Company Name',
+				name: 'recruitmentCompanyName',
+				type: 'string',
+				default: '',
+				required: true,
+				displayOptions: {
+					show: {
+						endpoint: ['recruitmentData'],
+					},
+				},
+				description: 'Please enter a company name',
+			},
+			{
+				displayName: 'Company Name',
+				name: 'technologyCompanyName',
+				type: 'string',
+				default: '',
+				required: true,
+				displayOptions: {
+					show: {
+						endpoint: ['technologyLookup'],
+					},
+				},
+				description: 'Please enter a company name',
+			},
+			{
+				displayName: 'Company Name',
+				name: 'officialRecordsCompanyName',
+				type: 'string',
+				default: '',
+				required: true,
+				displayOptions: {
+					show: {
+						endpoint: ['officialRecords'],
+					},
+				},
+				description: 'Please enter a company name (UK companies only)',
 			},
 			{
 				displayName: 'Company Name',
@@ -156,7 +231,7 @@ export class Ventur implements INodeType {
 				description: 'The company country',
 			},
 			{
-				displayName: 'Search Input',
+				displayName: 'Search Criteria',
 				name: 'searchInput',
 				type: 'string',
 				default: '',
@@ -166,42 +241,7 @@ export class Ventur implements INodeType {
 						endpoint: ['discoverCompanies'],
 					},
 				},
-				description: 'Search criteria for discovering companies',
-			},
-			{
-				displayName: 'Additional Fields',
-				name: 'additionalFields',
-				type: 'collection',
-				placeholder: 'Add Field',
-				default: {},
-				displayOptions: {
-					show: {
-						endpoint: [
-							'companySnapshot',
-							'peopleSnapshot',
-							'customerFeedback',
-							'recruitmentData',
-							'technologyLookup',
-							'officialRecords',
-						],
-					},
-				},
-				options: [
-					{
-						displayName: 'Timestamp',
-						name: 'timestamp',
-						type: 'string',
-						default: '',
-						description: 'ISO 8601 timestamp (optional, will use current time if not provided)',
-					},
-					{
-						displayName: 'Source',
-						name: 'source',
-						type: 'string',
-						default: 'n8n-integration',
-						description: 'Request source identifier',
-					},
-				],
+				description: 'Enter search criteria for discovering companies, e.g., pre-seed investors in the UK',
 			},
 		],
 	};
@@ -217,7 +257,6 @@ export class Ventur implements INodeType {
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
 				const endpoint = this.getNodeParameter('endpoint', itemIndex) as string;
-				const simplify = this.getNodeParameter('simplify', itemIndex) as boolean;
 
 				let requestBody: IDataObject = {};
 				let apiEndpoint = '';
@@ -227,32 +266,32 @@ export class Ventur implements INodeType {
 					case 'companySnapshot':
 						apiEndpoint = '/api/v1/company-snapshot';
 						requestBody = {
-							query: this.getNodeParameter('query', itemIndex),
-							timestamp: this.getNodeParameter('additionalFields.timestamp', itemIndex, new Date().toISOString()),
-							source: this.getNodeParameter('additionalFields.source', itemIndex, 'n8n-integration'),
+							query: this.getNodeParameter('companySnapshotName', itemIndex),
+							timestamp: new Date().toISOString(),
+							source: 'ventur-n8n-integration',
 						};
 						break;
 
 					case 'peopleSnapshot':
 						apiEndpoint = '/api/v1/people-snapshot';
 						requestBody = {
-							query: this.getNodeParameter('query', itemIndex),
-							timestamp: this.getNodeParameter('additionalFields.timestamp', itemIndex, new Date().toISOString()),
-							source: this.getNodeParameter('additionalFields.source', itemIndex, 'n8n-integration'),
+							query: this.getNodeParameter('personName', itemIndex),
+							timestamp: new Date().toISOString(),
+							source: 'ventur-n8n-integration',
 						};
 						break;
 
 					case 'webSearch':
 						apiEndpoint = '/api/v1/web-search';
 						requestBody = {
-							query: this.getNodeParameter('query', itemIndex),
+							query: this.getNodeParameter('webSearchQuery', itemIndex),
 						};
 						break;
 
 					case 'demoResearch':
 						apiEndpoint = '/api/v1/demo-research';
 						requestBody = {
-							query: this.getNodeParameter('query', itemIndex),
+							query: this.getNodeParameter('researchQuery', itemIndex),
 						};
 						break;
 
@@ -275,36 +314,36 @@ export class Ventur implements INodeType {
 					case 'customerFeedback':
 						apiEndpoint = '/api/v1/customer-feedback';
 						requestBody = {
-							query: this.getNodeParameter('query', itemIndex),
-							timestamp: this.getNodeParameter('additionalFields.timestamp', itemIndex, new Date().toISOString()),
-							source: this.getNodeParameter('additionalFields.source', itemIndex, 'n8n-integration'),
+							query: this.getNodeParameter('customerFeedbackCompanyName', itemIndex),
+							timestamp: new Date().toISOString(),
+							source: 'ventur-n8n-integration',
 						};
 						break;
 
 					case 'recruitmentData':
 						apiEndpoint = '/api/v1/recruitment-data';
 						requestBody = {
-							query: this.getNodeParameter('query', itemIndex),
-							timestamp: this.getNodeParameter('additionalFields.timestamp', itemIndex, new Date().toISOString()),
-							source: this.getNodeParameter('additionalFields.source', itemIndex, 'n8n-integration'),
+							query: this.getNodeParameter('recruitmentCompanyName', itemIndex),
+							timestamp: new Date().toISOString(),
+							source: 'ventur-n8n-integration',
 						};
 						break;
 
 					case 'technologyLookup':
 						apiEndpoint = '/api/v1/technology-lookup';
 						requestBody = {
-							query: this.getNodeParameter('query', itemIndex),
-							timestamp: this.getNodeParameter('additionalFields.timestamp', itemIndex, new Date().toISOString()),
-							source: this.getNodeParameter('additionalFields.source', itemIndex, 'n8n-integration'),
+							query: this.getNodeParameter('technologyCompanyName', itemIndex),
+							timestamp: new Date().toISOString(),
+							source: 'ventur-n8n-integration',
 						};
 						break;
 
 					case 'officialRecords':
 						apiEndpoint = '/api/v1/official-records';
 						requestBody = {
-							query: this.getNodeParameter('query', itemIndex),
-							timestamp: this.getNodeParameter('additionalFields.timestamp', itemIndex, new Date().toISOString()),
-							source: this.getNodeParameter('additionalFields.source', itemIndex, 'n8n-integration'),
+							query: this.getNodeParameter('officialRecordsCompanyName', itemIndex),
+							timestamp: new Date().toISOString(),
+							source: 'ventur-n8n-integration',
 						};
 						break;
 
@@ -323,7 +362,7 @@ export class Ventur implements INodeType {
 					json: true,
 				});
 
-				const result = simplify ? { simplified: true, data: response } : response;
+				const result = response;
 
 				returnData.push({
 					json: result,

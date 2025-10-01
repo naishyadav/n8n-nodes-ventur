@@ -10,8 +10,7 @@ An n8n community node for integrating with the Ventur Business Intelligence API.
 - **🎯 10 API Endpoints**: Access all Ventur API endpoints through a single, intuitive n8n node
 - **🔄 Dynamic UI**: Input fields dynamically appear based on selected endpoint
 - **🔐 Secure Authentication**: API key management with password protection
-- **💡 Comprehensive Tooltips**: Detailed descriptions and guidance for all parameters
-- **📊 Response Simplification**: Option to return simplified responses for complex data structures
+- **💡 Comprehensive Tooltips**: Detailed descriptions and guidance for all parameters with examples
 - **⚡ Error Handling**: Robust error messages and graceful failure handling
 
 ## 📦 Installation
@@ -102,33 +101,34 @@ Access official company registration data
 
 1. **Trigger**: Schedule or webhook
 2. **Ventur Node**:
-   - Endpoint: Company Snapshot
-   - Query: `{{$json.companyName}}`
+   - Venture Intelligence Endpoint: Company Snapshot
+   - Company Name: `{{$json.companyName}}`
 3. **Output**: Company intelligence data
 
-### Advanced Workflow with Simplification
+### Advanced Workflow
 
-For endpoints returning complex data, enable "Simplify Response" to get a cleaner output with the most important fields.
+The node automatically handles complex data structures and provides comprehensive responses from the Ventur API.
 
 ## Node Parameters
 
 ### Common Parameters
 
-- **Endpoint**: Select the API endpoint to use
-- **Simplify Response**: Return simplified data instead of raw response (recommended for complex responses)
+- **Venture Intelligence Endpoint**: Select the API endpoint to use
 
 ### Endpoint-Specific Parameters
 
-Most endpoints require a `query` parameter. Some have additional fields:
+Each endpoint has specific input fields with clear labels and examples:
 
-- **Enterprise Company Report**: Requires company name, website, and country
-- **Discover Companies**: Requires search input
-
-### Additional Fields
-
-Some endpoints support additional fields in a collection:
-- **Timestamp**: ISO 8601 timestamp (auto-generated if not provided)
-- **Source**: Request source identifier (defaults to "n8n-integration")
+- **Company Snapshot**: Company Name (e.g., "Monzo Bank")
+- **People Snapshot**: Person Name (e.g., "John Doe")
+- **Web Search**: Search Query
+- **Demo Research**: Research Query for demo preparation
+- **Enterprise Company Report**: Company name, website, and country
+- **Discover Companies**: Search Criteria (e.g., "pre-seed investors in the UK")
+- **Customer Feedback**: Company Name (e.g., "Monzo Bank")
+- **Recruitment Data**: Company Name
+- **Technology Lookup**: Company Name
+- **Official Records**: Company Name (UK companies only)
 
 ## Error Handling
 
@@ -140,10 +140,10 @@ The node provides clear error messages for:
 
 ## Best Practices
 
-- Use the "Simplify Response" option for endpoints returning large amounts of data
 - Implement proper error handling in your workflows
 - Respect API rate limits
 - Store API keys securely using n8n credentials
+- Use the specific input fields with provided examples for best results
 
 ## 📄 License
 

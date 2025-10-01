@@ -1,6 +1,6 @@
 {
   "name": "@venturhq/n8n-nodes-ventur",
-  "version": "1.0.4",
+  "version": "1.0.9",
   "description": "n8n node for Ventur Business Intelligence API",
   "keywords": [
     "n8n-community-node-package",
@@ -19,8 +19,8 @@
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "nodemon",
+  	"build": "tsc && cp -r src/**/*.png dist/ 2>/dev/null || find src -name '*.png' -exec cp {} dist/nodes/Ventur/ \\;",
+  	"dev": "nodemon",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "test": "jest"
