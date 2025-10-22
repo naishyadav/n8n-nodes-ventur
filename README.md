@@ -60,11 +60,6 @@ AI-powered web search with intelligent analysis
 - **Input**: Search query
 - **Use case**: Web research and analysis
 
-### Demo Research
-Business intelligence research for demo preparation
-- **Input**: Research query
-- **Use case**: Preparing business demos
-
 ### Enterprise Company Report
 Detailed enterprise-level company analysis
 - **Inputs**: Company name, website, country
@@ -122,7 +117,6 @@ Each endpoint has specific input fields with clear labels and examples:
 - **Company Snapshot**: Company Name (e.g., "Monzo Bank")
 - **People Snapshot**: Person Name (e.g., "John Doe")
 - **Web Search**: Search Query
-- **Demo Research**: Research Query for demo preparation
 - **Enterprise Company Report**: Company name, website, and country
 - **Discover Companies**: Search Criteria (e.g., "pre-seed investors in the UK")
 - **Customer Feedback**: Company Name (e.g., "Monzo Bank")

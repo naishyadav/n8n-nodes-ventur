@@ -43,20 +43,15 @@ export class Ventur implements INodeType {
 						description: 'Get detailed person profiles and professional intelligence',
 					},
 					{
-						name: 'Web Search',
-						value: 'webSearch',
-						description: 'AI-powered web search with intelligent analysis',
-					},
-					{
-						name: 'Demo Research',
-						value: 'demoResearch',
-						description: 'Business intelligence research for demo preparation',
-					},
-					{
-						name: 'Enterprise Company Report',
-						value: 'enterpriseCompanyReport',
-						description: 'Detailed enterprise-level company analysis',
-					},
+					name: 'Web Search',
+					value: 'webSearch',
+					description: 'AI-powered web search with intelligent analysis',
+				},
+				{
+					name: 'Enterprise Company Report',
+					value: 'enterpriseCompanyReport',
+					description: 'Detailed enterprise-level company analysis',
+				},
 					{
 						name: 'Discover Companies',
 						value: 'discoverCompanies',
@@ -125,19 +120,6 @@ export class Ventur implements INodeType {
 					},
 				},
 				description: 'Enter a search query',
-			},
-			{
-				displayName: 'Research Query',
-				name: 'researchQuery',
-				type: 'string',
-				default: '',
-				required: true,
-				displayOptions: {
-					show: {
-						endpoint: ['demoResearch'],
-					},
-				},
-				description: 'Enter a research query for demo preparation',
 			},
 			{
 				displayName: 'Company Name',
@@ -285,13 +267,6 @@ export class Ventur implements INodeType {
 						apiEndpoint = '/api/v1/web-search';
 						requestBody = {
 							query: this.getNodeParameter('webSearchQuery', itemIndex),
-						};
-						break;
-
-					case 'demoResearch':
-						apiEndpoint = '/api/v1/demo-research';
-						requestBody = {
-							query: this.getNodeParameter('researchQuery', itemIndex),
 						};
 						break;
 
